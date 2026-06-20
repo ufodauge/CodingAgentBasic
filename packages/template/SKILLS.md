@@ -28,6 +28,7 @@
 - データ変換を処理手順ではなく変換パイプラインとして表現する。
 - 小さな純粋関数を合成する。
 - ルールや分岐を可能な範囲でデータ構造として表現する。
+- rule engine として `rules` / `pricingRules` などを export する場合は、空の飾りにせず実際の計算フローで使う。
 - `reduce` は濫用せず、読みにくい場合は helper 関数を作る。
 - price breakdown や集計結果では、最終値だけでなく中間値の不変条件も守る。例: `total` を 0 に丸めるだけでなく、`discountTotal` も実際に適用された上限内の値にする。
 
@@ -53,6 +54,7 @@
 - `TransformStream` を小さな部品として定義する。
 - parse error は stream 全体のクラッシュではなく値として流す。
 - back-pressure、cancel、abort、error propagation を考慮する。
+- cancel / abort は型だけでは確認できないため、既存の受け入れテストで伝播を確認する。必要に応じて一時スクリプトで検証してもよいが、作業後に削除する。
 
 ## 8. pure core / imperative shell
 
@@ -63,7 +65,7 @@
 
 ## 9. lint / typecheck / test discipline
 
-- lint error、type error、test failure を残さない。
+- lint error、lint warning、type error、test failure を残さない。
 - 型エラーを `as any` で隠さない。
 - lint rule を無効化しない。
 - 既存テストを改変しない。

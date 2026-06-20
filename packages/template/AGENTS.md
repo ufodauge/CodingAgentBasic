@@ -12,6 +12,7 @@
 - 非同期処理は `Promise.all` などで合成可能な形にする。
 - Web Stream API は `pipeThrough` / `pipeTo` を優先し、chunk 境界と back-pressure を壊さない。
 - 作業完了前に `pnpm lint`、`pnpm typecheck`、`pnpm test` を通す。
+- `pnpm lint` が exit code 0 でも warning が残っている場合は未解消の問題として扱い、評価では減点対象にする。
 
 ## 禁止事項
 
@@ -25,6 +26,8 @@
 - ドメインロジックに DB、fetch、file system、console などの副作用を混ぜる。
 - テスト通過のためだけのハードコードを行う。
 - 不正状態を boolean flags の組み合わせで表現する。
+- export した rule table や helper API を形だけ置き、実装で使わない。
+- 検証用の一時スクリプトやログ出力を提出物に残す。
 
 ## 例外的に許容されるもの
 
