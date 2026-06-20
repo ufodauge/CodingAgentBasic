@@ -1,0 +1,15 @@
+{
+  "name": "CodingAgentBasic",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "fmt": "oxfmt"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@11.8.0",
+  "devDependencies": {
+    "oxfmt": "catalog:"
+  }
+}
