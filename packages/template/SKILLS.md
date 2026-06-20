@@ -29,6 +29,7 @@
 - 小さな純粋関数を合成する。
 - ルールや分岐を可能な範囲でデータ構造として表現する。
 - `reduce` は濫用せず、読みにくい場合は helper 関数を作る。
+- price breakdown や集計結果では、最終値だけでなく中間値の不変条件も守る。例: `total` を 0 に丸めるだけでなく、`discountTotal` も実際に適用された上限内の値にする。
 
 ## 5. state machine modeling
 

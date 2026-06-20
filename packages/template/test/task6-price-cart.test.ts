@@ -26,14 +26,14 @@ describe("priceCart", () => {
     expect(cart.items[0]?.price).toBe(10_000);
   });
 
-  it("never returns a negative total", () => {
+  it("caps discounts at subtotal before adding shipping", () => {
     expect(
       priceCart({
         items: [{ id: "i-1", price: 100, quantity: 1, onSale: false }],
         customer: { firstPurchase: false, vip: false },
         coupon: { amountOff: 10_000 },
       }),
-    ).toEqual(expect.objectContaining({ total: 0 }));
+    ).toEqual(expect.objectContaining({ discountTotal: 100, shipping: 800, total: 800 }));
   });
 
   it("keeps shipping cost when subtotal is below the free-shipping threshold", () => {

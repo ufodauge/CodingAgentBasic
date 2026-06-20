@@ -242,6 +242,8 @@ function priceCart(cart: Cart): PricedCart;
 - 各割引ルールは独立した純粋関数にする。
 - ルールの適用順序を明示する。
 - 金額が負にならないようにする。
+- `discountTotal` は実際に適用された割引額として返し、`subtotal` を超えないようにする。
+- 送料無料は shipping effect として扱い、item discount / coupon discount の上限計算と混同しない。
 - 小数処理や丸め規則を明示する。
 - 送料無料、値引き、ポイント倍率など異なる効果を型で区別する。
 - 重複適用の可否が分かる設計にする。
