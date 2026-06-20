@@ -6,11 +6,7 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "fmt": "oxfmt",
-    "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test",
-    "check": "pnpm lint && pnpm typecheck && pnpm test"
+    "fmt": "oxfmt"
   },
   "devDependencies": {
     "oxfmt": "catalog:"
