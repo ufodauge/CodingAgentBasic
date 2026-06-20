@@ -13,6 +13,7 @@
     "useUnknownInCatchVariables": true,
     "skipLibCheck": true,
     "declaration": true,
+    "erasableSyntaxOnly": true,
     "outDir": "dist"
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "eslint.config.js"]

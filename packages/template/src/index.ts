@@ -1,4 +1,3 @@
-export * from "./option.js";
 export * from "./result.js";
 export * from "./task1-parse-user.js";
 export * from "./task2-purchases.js";

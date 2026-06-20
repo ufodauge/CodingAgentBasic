@@ -29,8 +29,4 @@ $packageJson.name = "@coding-agent-basic/$packageNameSegment"
 $packageJson | ConvertTo-Json -Depth 20 | Set-Content -Path $packageJsonPath -Encoding utf8
 
 Write-Host "Created evaluation project: evaluations/$RunId"
-Write-Host 'Next steps:'
-Write-Host '  pnpm install'
-Write-Host "  pnpm --filter @coding-agent-basic/$packageNameSegment lint"
-Write-Host "  pnpm --filter @coding-agent-basic/$packageNameSegment typecheck"
-Write-Host "  pnpm --filter @coding-agent-basic/$packageNameSegment test"
+Write-Host 'Next: pnpm install'

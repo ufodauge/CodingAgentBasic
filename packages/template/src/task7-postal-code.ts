@@ -1,7 +1,5 @@
-import type { Option } from "./option.js";
-
 export type ApiResponse = unknown;
 
-export const getPostalCode = (_response: ApiResponse): Option<string> => {
+export const getPostalCode = (_response: ApiResponse): string | undefined => {
   throw new Error("Not Implemented");
 };

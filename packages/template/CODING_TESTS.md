@@ -1,29 +1,27 @@
 # Coding Tests
 
 このプロジェクトでは、以下の 9 課題を実装してください。
-実装前に `AGENTS.md` と `SKILLS.md` を読み、純粋性、副作用分離、不変性、型安全性、宣言的なデータ変換を守ってください。
+実装前に `AGENTS.md` を読み、純粋性、副作用分離、不変性、型安全性、宣言的なデータ変換を守ってください。
 
 コピー直後の `src/task*.ts` は public API だけを持つ `Not Implemented` の雛形です。
 `test/*.test.ts` は満たすべき受け入れテストです。テストを削除、弱体化、期待値変更してはいけません。
 
+**テスト受講者が他のワークスペースを閲覧することは禁止です。**
+
 ## 完了条件
 
-作業完了前に以下をすべて成功させてください。
+作業完了前に以下を成功させてください。
 
 ```bash
-pnpm install
-pnpm lint
-pnpm typecheck
-pnpm test
 pnpm check
 ```
 
-`EVALUATION.md` には、実装した課題、実行コマンド、結果、自己評価、改善点、`AGENTS.md` / `SKILLS.md` へのフィードバックを記録してください。
+`EVALUATION.md` には、実装した課題、実行コマンド、結果、自己評価、改善点、`AGENTS.md` へのフィードバックを記録してください。
 
 ## 共通要件
 
 - 入力オブジェクト、入力配列をミューテートしない。
-- 予期される失敗は `throw` ではなく `Result`、`Option`、または discriminated union で返す。
+- 予期される失敗は `throw` ではなく `Result`、`Nullable`、または discriminated union で返す。
 - 型エラーを `as any`、根拠のない型アサーション、`eslint-disable` で隠さない。
 - public API の関数名、引数、戻り値の意図を変えない。
 - テスト通過のためだけのハードコードをしない。
@@ -60,8 +58,6 @@ function parseUser(input: unknown): Result<User, readonly ValidationError[]>;
 - `throw` しない。
 - 不正な項目が複数ある場合は全件返す。
 - 入力オブジェクトをミューテートしない。
-- field ごとの小さな validator を合成する。
-- `unknown` から安全に型を絞る。
 - `age` は有限な数値であること。
 - `email` は最低限 `@` を含む文字列であること。
 - `name` と `id` は trim 後に空文字でないこと。
@@ -251,7 +247,7 @@ function priceCart(cart: Cart): PricedCart;
 
 ---
 
-## 7. Option / nullable を安全に扱う
+## 7. Nullable を安全に扱う
 
 対象: `src/task7-postal-code.ts`
 
@@ -268,7 +264,7 @@ type ApiResponse = {
   };
 };
 
-function getPostalCode(response: ApiResponse): Option<string>;
+function getPostalCode(response: ApiResponse): string | undefined;
 ```
 
 要件:
@@ -276,7 +272,7 @@ function getPostalCode(response: ApiResponse): Option<string>;
 - `Cannot read property of undefined` が起きない。
 - `null` / `undefined` を明示的に扱う。
 - 空文字の postal code をどう扱うか明示する。
-- `Option`、`optionMap`、`optionFlatMap`、optional chaining などを活用する。
+- optional chaining を活用する。
 - `undefined` と invalid value を区別できる設計にするとさらによい。
 
 ---
@@ -335,5 +331,3 @@ function createSession(
 - `now` と `randomId` を引数で注入する。
 - テストで固定値を渡せる。
 - 戻り値は入力に対して決定的である。
-
----

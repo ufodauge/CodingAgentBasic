@@ -1,21 +1,89 @@
-export type Result<T, E> =
-  | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly error: E };
+interface IResult<T, E> {
+  readonly ok: boolean;
+  readonly value?: T;
+  readonly error?: E;
 
-export const ok = <T>(value: T): Result<T, never> => ({ ok: true, value });
+  map<U>(transform: (value: T) => U): Result<U, E>;
+  flatMap<U, F>(transform: (value: T) => Result<U, F>): Result<U, E | F>;
+  mapError<F>(transform: (error: E) => F): Result<T, F>;
+  unwrapOr(defaultValue: T): T;
+  unwrapOrElse(defaultValue: () => T): T;
+  inspect(inspect: (value: T | E) => void): IResult<T, E>;
+}
 
-export const err = <E>(error: E): Result<never, E> => ({ ok: false, error });
+export class Ok<T> implements IResult<T, never> {
+  readonly ok = true;
+  public readonly value: T;
 
-export const map = <T, E, U>(result: Result<T, E>, transform: (value: T) => U): Result<U, E> =>
-  result.ok ? ok(transform(result.value)) : result;
+  constructor(value: T) {
+    this.value = value;
+  }
 
-export const flatMap = <T, E, U, F>(
-  result: Result<T, E>,
-  transform: (value: T) => Result<U, F>,
-): Result<U, E | F> => (result.ok ? transform(result.value) : result);
+  public map<U>(transform: (value: T) => U): Result<U, never> {
+    return ok(transform(this.value));
+  }
 
-export const mapError = <T, E, F>(result: Result<T, E>, transform: (error: E) => F): Result<T, F> =>
-  result.ok ? result : err(transform(result.error));
+  public flatMap<U, F>(transform: (value: T) => Result<U, F>): Result<U, F> {
+    return transform(this.value);
+  }
+
+  public mapError<F>(): Result<T, F> {
+    return this;
+  }
+
+  public unwrapOr(): T {
+    return this.value;
+  }
+
+  public unwrapOrElse(): T {
+    return this.value;
+  }
+
+  public inspect(inspect: (value: T) => void): this {
+    inspect(this.value);
+    return this;
+  }
+}
+
+export class Err<E> implements IResult<never, E> {
+  readonly ok = false;
+  public readonly error: E;
+
+  constructor(error: E) {
+    this.error = error;
+  }
+
+  public map<U>(): Result<U, E> {
+    return this;
+  }
+
+  public flatMap<U, F>(): Result<U, E | F> {
+    return this;
+  }
+
+  public mapError<F>(transform: (error: E) => F): Result<never, F> {
+    return err(transform(this.error));
+  }
+
+  public unwrapOr(defaultValue: never): never {
+    return defaultValue;
+  }
+
+  public unwrapOrElse(defaultValue: () => never): never {
+    return defaultValue();
+  }
+
+  public inspect(inspect: (value: E) => void): this {
+    inspect(this.error);
+    return this;
+  }
+}
+
+export type Result<T, E> = Ok<T> | Err<E>;
+
+export const ok = <T>(value: T): Result<T, never> => new Ok(value);
+
+export const err = <E>(error: E): Result<never, E> => new Err(error);
 
 export const sequence = <T, E>(
   results: readonly Result<T, E>[],
