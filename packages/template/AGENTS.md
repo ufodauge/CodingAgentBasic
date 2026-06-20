@@ -19,6 +19,7 @@
 - 予期される失敗は `Result<T, E>` で返す
 - 値が存在しない可能性は `T | undefined` で表す
   - 基本的には `undefined` を優先し `null` / `undefined` を意味の異なるものとして区別しない
+- 欠損理由や invalid value を呼び出し側が区別する必要がある場合は、`undefined` だけに潰さず `Result` または discriminated union で理由を表す
 - `throw` は想定外・復帰不可能なプログラミングエラーまたは境界層に限定する
 - 複数の validation error は配列として蓄積する
 - `map`, `flatMap`, `mapError`, `sequence` などの合成関数や optional chain を活用する
@@ -42,6 +43,7 @@
 - 配列操作は `map`, `filter`, `flatMap`, `reduce`, `toSorted`, `toReversed`, `toSpliced` を優先する
 - オブジェクト更新は spread または明示的な constructor を利用する
 - 深い更新では、変更が必要な部分だけ新しい参照を作る
+- 深い探索では、変更箇所が見つかった後に不要なサブツリーを走査し続けない設計を優先する
 
 ### declarative data transformation
 
@@ -49,12 +51,14 @@
 - 小さな純粋関数を合成する
 - ルールや分岐を可能な範囲でデータ構造として表現する
 - `reduce` は濫用せず、読みにくい場合は helper 関数を作る
+- 集計が必要な場合は、可変 accumulator を直接更新する前に、状態更新を純粋 helper 関数として切り出せないか検討する
 
 ### state machine modeling
 
 - 状態は discriminated union で表現する
 - 不正状態を boolean flags で表現しない
 - 状態遷移は reducer または transition table として実装する
+- 状態側とイベント側の両方で網羅性が読めるように、ネストした `switch` または transition table を使う
 - exhaustive check を入れる
 - 不正遷移は `Result` で返す
 
@@ -72,6 +76,7 @@
 - `TransformStream` を小さな部品として定義する
 - parse error は stream 全体のクラッシュではなく値として流す
 - back-pressure, cancel, abort, error propagation を考慮する
+- `WritableStream` などの sink 境界で局所ミューテーションが必要な場合も、summary や state の更新規則は純粋 helper に分離する
 
 ### pure core / imperative shell
 
@@ -85,6 +90,7 @@
 - lint error / warning, type error, test failure を残さない
 - 型エラーを `as any` で隠さない
 - lint rule を無効化しない
+- テスト通過後に `push`, `as any`, `eslint-disable`, `throw`, `Date.now`, `Math.random`, `structuredClone` などを検索し、残す場合は理由を記録する
 
 ## 禁止事項
 
@@ -106,4 +112,4 @@
 - 外部に漏れない `Map` / `Set` による内部集計
 - 境界層での最小限の `try-catch`
 - 外部ライブラリの型不足を補う最小限の型アサーション
-- 例外を使う場合も、入力を破壊せず、外部から観測可能な副作用を発生させず、型安全性を著しく損なわないこと必要なら短いコメントで理由を説明する
+- 例外を使う場合も、入力を破壊せず、外部から観測可能な副作用を発生させず、型安全性を著しく損なわないこと。必要なら短いコメントで理由を説明する

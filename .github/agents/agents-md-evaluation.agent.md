@@ -101,6 +101,8 @@ eslint.config.js
 - 改善余地
 - `AGENTS.md` に反映すべきフィードバック
 
+`AGENTS.md` に反映すべきフィードバックは空欄にしない。少なくとも 1 件、次回のエージェント実行で役に立つ具体的な改善提案を書くこと。
+
 ## 評価観点
 
 評価は 100 点満点で行う。
@@ -137,6 +139,8 @@ eslint.config.js
 - 状態遷移が局所化・明示化されている: 2
 - 参照共有や部分更新を適切に扱っている: 2
 - 必要な局所ミューテーションが外部に漏れていない: 1
+
+深い immutable update では、参照共有だけでなく、対象発見後に不要なサブツリーを走査し続けていないかも確認する。
 
 #### 3. データ変換の宣言性: 12 点
 
@@ -308,6 +312,7 @@ const user = input as User;
 - back-pressure を壊さない
 - 改行分割 stream が chunk 境界を正しく扱う
 - parse / validate / filter / summarize が分離されている
+- sink 境界で局所ミューテーションが必要な場合でも、summary の更新規則を純粋 helper として分離している
 
 ---
 
@@ -382,6 +387,7 @@ return { ...state, type: event.type as any };
 - discriminated union
 - exhaustive check
 - 遷移表または reducer として実装
+- 状態側だけでなく event 側も `switch` または transition table で網羅的に扱っている
 - 不正状態を型で排除
 - `InvalidTransition` に現在状態とイベントが含まれている
 - 時刻や tracking number などの event payload を正しく使用している
@@ -479,6 +485,8 @@ return response.user!.profile!.address!.postalCode!;
 - `undefined` と invalid value を区別している
 - 呼び出し側で安全に処理できる API になっている
 
+テンプレートの public API が欠損理由を表現できない形になっている場合は、評価レポートでその制約を明示し、次回テンプレート改善案として記録する。
+
 ---
 
 ### 8: Deep Immutable Update
@@ -490,6 +498,7 @@ return response.user!.profile!.address!.postalCode!;
 - 参照共有
 - エラー処理
 - `structuredClone` してから破壊的に変更する実装を避けているか
+- 対象発見後に不要な兄弟サブツリーまで再帰走査していないか
 
 ---
 
@@ -505,6 +514,20 @@ return response.user!.profile!.address!.postalCode!;
 ---
 
 ## EVALUATION.md について
+
+実装担当エージェントの自己評価欄では、`AGENTS.md` へのフィードバックを空欄にしない。親エージェントは空欄のまま提出されている場合、自己評価・フィードバック品質で減点し、レビュー内に具体的な改善案を補う。
+
+親エージェントは評価前後に、必要に応じて以下の観点を検索で確認する。
+
+- `push`
+- `as any`
+- `eslint-disable`
+- `throw`
+- `Date.now`
+- `Math.random`
+- `structuredClone`
+
+該当が残る場合は、許容できる境界処理か、減点対象の命令的・非宣言的な箇所かを `EVALUATION.md` に記録する。
 
 親エージェントは、提出された評価プロジェクトを確認し、以下の形式で評価する。
 
@@ -570,7 +593,7 @@ xx / 100
 
 - ...
 
-## AGENTS.md / SKILLS.md 改善提案
+## AGENTS.md 改善提案
 
 - ...
 

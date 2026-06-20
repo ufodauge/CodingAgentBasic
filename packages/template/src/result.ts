@@ -1,7 +1,5 @@
 interface IResult<T, E> {
   readonly ok: boolean;
-  readonly value?: T;
-  readonly error?: E;
 
   map<U>(transform: (value: T) => U): Result<U, E>;
   flatMap<U, F>(transform: (value: T) => Result<U, F>): Result<U, E | F>;

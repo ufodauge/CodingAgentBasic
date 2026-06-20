@@ -57,6 +57,6 @@ pnpm check
 
 -
 
-## AGENTS.md / SKILLS.md へのフィードバック
+## AGENTS.md へのフィードバック
 
 -

@@ -65,7 +65,7 @@ pnpm check
 - Result 型に `inspect` のような一般名メソッドを置く場合、テストランナーや Node の formatter と衝突し得るため、引数なし呼び出しへの耐性または別名化を検討するとよい。
 - 非同期課題では、一部リソースの fetch が失敗しても、成功したレスポンスの validation error を可能な範囲で集約することを明示するとよい。
 
-## AGENTS.md / SKILLS.md へのフィードバック
+## AGENTS.md へのフィードバック
 
 -
 
@@ -104,7 +104,7 @@ git -C C:/Users/hakka/Documents/Develop/CodingAgentBasic diff --no-index -- C:/U
 | 非同期・ストリーム・リソース管理   |  9/10 | `Promise.all`、`AbortSignal` 伝播、stream cancel 対応がある。大量 ID の concurrency limit は未実装だが拡張余地はある。                              |
 | 可読性・実用性                     |  9/10 | 全体に小さな関数へ分割されていて保守しやすい。`task2` の proxy stream は複雑なので補助関数化または短い意図コメントがあるとさらによい。              |
 | lint / typecheck / test discipline |   8/8 | lint / typecheck / test すべて pass。`as any`、`eslint-disable`、テスト改変は見当たらない。                                                         |
-| 自己評価・フィードバック品質       |   4/5 | 実行結果と改善余地は具体的。ただし `AGENTS.md / SKILLS.md へのフィードバック` 欄が空欄に近い。                                                      |
+| 自己評価・フィードバック品質       |   4/5 | 実行結果と改善余地は具体的。ただし `AGENTS.md へのフィードバック` 欄が空欄に近い。                                                      |
 
 ## 良い点
 
@@ -119,7 +119,7 @@ git -C C:/Users/hakka/Documents/Develop/CodingAgentBasic diff --no-index -- C:/U
 - `task2` の `summarizePurchases` は stream の sink 境界とはいえ、局所可変配列への `push` による集計が中心で、宣言的な summary reducer としては弱い。
 - `task4` は状態ごとの fallback で不正遷移を返しており、「すべての状態・イベントの組み合わせを明示的に扱う」という観点では event 側の網羅性がやや暗黙的。
 - `task8` は対象ノードが先頭の枝に見つかっても全 children に対して再帰処理を行うため、大きな木では不要な走査が増える。
-- `EVALUATION.md` の `AGENTS.md / SKILLS.md へのフィードバック` 欄が空で、次回の指示改善に直接使える形としては少し弱い。
+- `EVALUATION.md` の `AGENTS.md へのフィードバック` 欄が空で、次回の指示改善に直接使える形としては少し弱い。
 
 ## 命令的・非宣言的な箇所
 
@@ -183,15 +183,16 @@ case "draft":
 - `task5` は command plan のみを生成し、DB / mailer / billing / logger を直接呼ばない。
 - `task9` は `now` と `randomId` の依存性注入で決定的にテスト可能。
 
-## AGENTS.md / SKILLS.md 改善提案
+## AGENTS.md 改善提案
 
 - stream の集計では、sink 境界で局所ミューテーションが必要になる場合でも、状態更新関数を純粋関数として切り出すと評価されやすい、と明記するとよい。
 - state machine は状態側だけでなく event 側も `switch` または transition table で網羅する、という指針を追加するとよい。
-- `EVALUATION.md` の `AGENTS.md / SKILLS.md へのフィードバック` 欄は空欄禁止にし、最低 1 つの具体的な改善提案を書くよう明示するとよい。
+- `EVALUATION.md` の `AGENTS.md へのフィードバック` 欄は空欄禁止にし、最低 1 つの具体的な改善提案を書くよう明示するとよい。
 - deep immutable update では、参照共有だけでなく不要なサブツリー走査を避ける探索設計も評価対象だと追記するとよい。
 
 ## 次回のコーディングエージェントへの追加指示
 
+- テンプレートにおいて、`task7` の戻り値が欠損理由を表せない形になっているが、これの方針を検討し修正する
 - テストを通した後、`grep` で `push`, `as any`, `eslint-disable`, `throw`, `Date.now`, `Math.random`, `structuredClone` を確認し、残る場合は理由を `EVALUATION.md` に書くこと。
 - stream 処理は `pipeThrough` / `pipeTo` を使いつつ、summary の状態更新を純粋 helper に切り出すこと。
 - state machine は state と event の両方で網羅性が読める形にすること。
