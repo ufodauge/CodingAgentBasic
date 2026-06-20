@@ -71,8 +71,8 @@ evaluations/agent-run-001/
 
 ```yaml
 packages:
-  - 'packages/*'
-  - 'evaluations/*'
+  - "packages/*"
+  - "evaluations/*"
 ```
 
 ### 3. 必須コマンド
@@ -425,10 +425,10 @@ type User = {
 };
 
 type ValidationError =
-  | { field: 'id'; message: string }
-  | { field: 'name'; message: string }
-  | { field: 'email'; message: string }
-  | { field: 'age'; message: string };
+  | { field: "id"; message: string }
+  | { field: "name"; message: string }
+  | { field: "email"; message: string }
+  | { field: "age"; message: string };
 
 type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
 ```
@@ -491,7 +491,7 @@ const user = input as User;
 ```ts
 type RawEvent = {
   userId: string;
-  type: 'view' | 'click' | 'purchase';
+  type: "view" | "click" | "purchase";
   amount?: number;
 };
 ```
@@ -643,30 +643,27 @@ await Promise.all(userIds.map(loadDashboard));
 
 ```ts
 type OrderState =
-  | { type: 'draft' }
-  | { type: 'submitted'; submittedAt: Date }
-  | { type: 'paid'; paidAt: Date }
-  | { type: 'shipped'; shippedAt: Date; trackingNumber: string }
-  | { type: 'cancelled'; reason: string };
+  | { type: "draft" }
+  | { type: "submitted"; submittedAt: Date }
+  | { type: "paid"; paidAt: Date }
+  | { type: "shipped"; shippedAt: Date; trackingNumber: string }
+  | { type: "cancelled"; reason: string };
 ```
 
 イベント:
 
 ```ts
 type OrderEvent =
-  | { type: 'submit'; at: Date }
-  | { type: 'pay'; at: Date }
-  | { type: 'ship'; at: Date; trackingNumber: string }
-  | { type: 'cancel'; reason: string };
+  | { type: "submit"; at: Date }
+  | { type: "pay"; at: Date }
+  | { type: "ship"; at: Date; trackingNumber: string }
+  | { type: "cancel"; reason: string };
 ```
 
 実装:
 
 ```ts
-function transition(
-  state: OrderState,
-  event: OrderEvent,
-): Result<OrderState, InvalidTransition>;
+function transition(state: OrderState, event: OrderEvent): Result<OrderState, InvalidTransition>;
 ```
 
 ## 条件
@@ -691,7 +688,7 @@ type Order = {
 ```
 
 ```ts
-state.type = 'paid';
+state.type = "paid";
 ```
 
 ```ts
@@ -719,7 +716,7 @@ return { ...state, type: event.type as any };
 type RegisterInput = {
   email: string;
   name: string;
-  plan: 'free' | 'pro';
+  plan: "free" | "pro";
 };
 ```
 
@@ -735,18 +732,16 @@ type RegisterInput = {
 
 ```ts
 type Command =
-  | { type: 'createUser'; user: NewUser }
-  | { type: 'sendWelcomeEmail'; email: string }
-  | { type: 'createBillingCustomer'; email: string }
-  | { type: 'writeAuditLog'; message: string };
+  | { type: "createUser"; user: NewUser }
+  | { type: "sendWelcomeEmail"; email: string }
+  | { type: "createBillingCustomer"; email: string }
+  | { type: "writeAuditLog"; message: string };
 ```
 
 実装:
 
 ```ts
-function planRegistration(
-  input: RegisterInput,
-): Result<Command[], ValidationError[]>;
+function planRegistration(input: RegisterInput): Result<Command[], ValidationError[]>;
 ```
 
 ## 条件
@@ -940,11 +935,7 @@ type Node = {
 実装:
 
 ```ts
-function renameNode(
-  root: Node,
-  id: string,
-  name: string,
-): Result<Node, RenameError>;
+function renameNode(root: Node, id: string, name: string): Result<Node, RenameError>;
 ```
 
 ## 条件
@@ -1094,7 +1085,7 @@ lint を厳しくしすぎて可読性や実用性を損なわないよう注意
 
 エージェントは作業完了時に `EVALUATION.md` を作成し、以下の形式で記載する。
 
-```md
+````md
 # Evaluation Report
 
 ## 実装対象
@@ -1115,6 +1106,7 @@ pnpm lint
 pnpm typecheck
 pnpm test
 ```
+````
 
 ## 実行結果
 
@@ -1145,7 +1137,8 @@ pnpm test
 ## AGENTS.md / SKILLS.md へのフィードバック
 
 - ...
-```
+
+````
 
 ---
 
@@ -1196,7 +1189,7 @@ xx / 100
 
 ```ts
 // 該当コード
-```
+````
 
 理由:
 
@@ -1221,6 +1214,7 @@ xx / 100
 ## 次回のコーディングエージェントへの追加指示
 
 - ...
+
 ```
 
 ---
@@ -1243,3 +1237,4 @@ xx / 100
 - 過剰な抽象化ではなく、実用的で読みやすい宣言的コードを書く
 
 評価では、構文上の特徴だけでなく、コード全体の設計として宣言的・合成可能・型安全・テスト可能になっているかを重視する。
+```
