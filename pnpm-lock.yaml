@@ -33,6 +33,24 @@ importers:
         specifier: 'catalog:'
         version: 0.55.0
 
+  evaluations/gpt-5-3-run-001:
+    devDependencies:
+      '@eslint/js':
+        specifier: 'catalog:'
+        version: 9.39.2
+      eslint:
+        specifier: 'catalog:'
+        version: 9.39.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      typescript-eslint:
+        specifier: 'catalog:'
+        version: 8.48.1(eslint@9.39.2)(typescript@5.9.3)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.15
+
   packages/template:
     devDependencies:
       '@eslint/js':
